@@ -28,7 +28,7 @@ export function FadePet() {
   const [fadeCount, setFadeCount] = useState(0);
   const [isBubbleVisible, setIsBubbleVisible] = useState(false);
   const buttonRef = useRef<HTMLButtonElement | null>(null);
-  const hideTimeoutRef = useRef<ReturnType<typeof window.setTimeout> | null>(
+  const hideTimeoutRef = useRef<number | null>(
     null
   );
 
