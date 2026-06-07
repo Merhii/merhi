@@ -17,6 +17,8 @@ const fallbackStats: LeetcodeStats = {
   hardSolved: 15
 };
 
+type LeetcodeStatsApiResponse = Partial<LeetcodeStats>;
+
 const leetcodeColors = {
   easy: "#00B8A3",
   medium: "#FFC01E",
@@ -54,12 +56,33 @@ export function LeetcodeDonut() {
 
   useEffect(() => {
     let ignore = false;
+    const username = process.env.NEXT_PUBLIC_LEETCODE_USERNAME;
 
     async function loadData() {
+      if (!username) {
+        setStats(fallbackStats);
+        return;
+      }
+
       try {
-        const response = await fetch("/api/leetcode");
-        const payload = (await response.json()) as LeetcodeStats;
-        if (!ignore) setStats(payload);
+        const response = await fetch(
+          `https://leetcode-stats-api.herokuapp.com/${username}`
+        );
+
+        if (!response.ok) {
+          throw new Error("LeetCode stats request failed");
+        }
+
+        const payload = (await response.json()) as LeetcodeStatsApiResponse;
+
+        if (!ignore) {
+          setStats({
+            totalSolved: payload.totalSolved ?? fallbackStats.totalSolved,
+            easySolved: payload.easySolved ?? fallbackStats.easySolved,
+            mediumSolved: payload.mediumSolved ?? fallbackStats.mediumSolved,
+            hardSolved: payload.hardSolved ?? fallbackStats.hardSolved
+          });
+        }
       } catch {
         if (!ignore) setStats(fallbackStats);
       }

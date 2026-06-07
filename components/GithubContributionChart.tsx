@@ -2,9 +2,10 @@
 
 import { GitBranch } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
-import type {
-  GithubContributionDay,
-  GithubContributionResponse
+import {
+  createMockGithubContributions,
+  type GithubContributionDay,
+  type GithubContributionResponse
 } from "@/lib/github";
 
 const intensityClasses = [
@@ -116,14 +117,27 @@ export function GithubContributionChart() {
 
   useEffect(() => {
     let ignore = false;
+    const contributionsUrl = process.env.NEXT_PUBLIC_GITHUB_CONTRIBUTIONS_URL;
 
     async function loadData() {
+      if (!contributionsUrl) {
+        if (!ignore) setData(createMockGithubContributions());
+        return;
+      }
+
       try {
-        const response = await fetch("/api/github");
+        const response = await fetch(contributionsUrl);
+
+        if (!response.ok) {
+          throw new Error("GitHub contributions request failed");
+        }
+
         const payload = (await response.json()) as GithubContributionResponse;
-        if (!ignore) setData(payload);
+        if (!ignore) {
+          setData(payload);
+        }
       } catch {
-        if (!ignore) setData(null);
+        if (!ignore) setData(createMockGithubContributions());
       }
     }
 
