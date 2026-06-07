@@ -142,6 +142,11 @@ a {
   animation: fade-pet-float 3.2s ease-in-out infinite;
 }
 
+.fade-pet-duck {
+  object-fit: contain;
+  pointer-events: none;
+}
+
 .fade-pet-bubble {
   opacity: 0;
   transform: translateY(0.5rem) scale(0.95);

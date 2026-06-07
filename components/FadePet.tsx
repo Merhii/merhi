@@ -1,9 +1,11 @@
 "use client";
 
+import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 
 const storageKey = "karim-portfolio-fade-pet-count";
 const fadeSoundPath = "/audio/faaaa.mp3";
+const duckPetPath = "/pets/duck.svg";
 
 function readFadeCount() {
   try {
@@ -117,23 +119,21 @@ export function FadePet() {
 
       <button
         aria-label={`Fade the portfolio pet. Faded ${fadeCount} times.`}
-        className="focus-ring fade-pet-button relative h-16 w-16 overflow-hidden rounded-md border border-portfolio-accent bg-portfolio-card shadow-glow"
+        className="focus-ring fade-pet-button relative grid h-20 w-20 place-items-center overflow-visible border-0 bg-transparent p-0"
         data-fade-pet-button
         onClick={handleFade}
         ref={buttonRef}
         type="button"
       >
-        <span className="absolute inset-x-3 top-3 flex justify-between">
-          <span className="h-2 w-2 rounded-full bg-portfolio-text" />
-          <span className="h-2 w-2 rounded-full bg-portfolio-text" />
-        </span>
-        <span className="absolute left-2 top-1 h-5 w-4 -rotate-12 rounded-md border border-portfolio-accent bg-portfolio-bg" />
-        <span className="absolute right-2 top-1 h-5 w-4 rotate-12 rounded-md border border-portfolio-accent bg-portfolio-bg" />
-        <span className="absolute bottom-3 left-1/2 h-2 w-7 -translate-x-1/2 rounded-full bg-portfolio-green" />
-        <span className="absolute bottom-0 left-0 h-5 w-full bg-portfolio-accent" />
-        <span className="absolute bottom-1 left-1/2 -translate-x-1/2 font-mono text-[10px] font-black text-portfolio-bg">
-          {fadeCount}
-        </span>
+        <Image
+          alt=""
+          aria-hidden="true"
+          className="fade-pet-duck h-20 w-20"
+          draggable={false}
+          height={80}
+          src={duckPetPath}
+          width={80}
+        />
       </button>
 
       <audio data-fade-pet-audio preload="auto" src={fadeSoundPath} />
